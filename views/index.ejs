@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,
+    maximum-scale=1,initial-scale=1">
+    <title>TIGER IOT SYSTEM</title>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css"> 
+</head>
+<body onload="getir();getir1();">
+    <input type="checkbox" id="menu-toggle">
+    <div class="sidebar">
+        <div class="brand">
+            <span class="las la-paw"></span>
+            <h2>TIGER IOT</h2>
+        </div>
+        <div class="sidemenu">
+            <div class="side-user">
+                <div class="side-img"   ></div>
+                <div class="user">
+                    <small>Ozan Hamdi KAPLAN</small>
+                    <p>Software Developer</p>
+                    <br/>
+                </div>
+            </div>
+            <ul>
+                <li>
+                    <a href="" class="active">
+                        <span class="las la-home"></span>
+                        <h1>Dashboard</h1>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div> 
+    <div class="main-content">
+        
+        <main>
+            <div class="cards">
+                <div class="card">
+                  <div class="card-icon follow">
+                    <span class="las la-temperature-low"></span>
+                  </div>
+                  <div class="card-info a">
+                    <h2 id="temperature" ></h2>
+                    <h3 >TEMPERATURE</h3>
+                  </div>
+               </div>
+
+               <div class="card">
+                <div class="card-icon likes">
+                  <span class="las la-tint"></span>
+                </div>
+                <div class="card-info a">
+                  <h2 id="humidity" ></h2>
+                  <h3>HUMIDITY</h3>
+                </div>
+                <script>
+                      'use strict';
+                      function ysAjax(url, method, dataa, callback) {
+                      var xhr = new XMLHttpRequest();
+                      xhr.onreadystatechange=function(){
+                        if(this.status==200){
+                          if(typeof callback=='function'){
+                            callback(this);
+                          }
+                        }
+                      }
+                      xhr.open(method,url);
+                      xhr.send(dataa);
+                    }
+                                          
+                    function getir1() {
+                        var veriler1=document.getElementById("temperature");
+                        var veriler2=document.getElementById("temp");
+                        var veriler3=document.getElementById("temp1");
+                        var veriler4=document.getElementById("temp2");
+                        var veriler5=document.getElementById("temp3");
+                        var veriler6=document.getElementById("temp4");
+
+                        ysAjax("kisiler1","GET",null,function(sonuc1){
+                          var gelenVeriler1 = JSON.parse(sonuc1.responseText);
+                          
+                            var publishedDate = new Date(gelenVeriler1[0].publishedAt);
+                            var formattedDate = publishedDate.toLocaleDateString();
+                            var formattedTime = publishedDate.toLocaleTimeString();
+
+                            var publishedDate1 = new Date(gelenVeriler1[1].publishedAt);
+                            var formattedDate1 = publishedDate1.toLocaleDateString();
+                            var formattedTime1 = publishedDate1.toLocaleTimeString();
+                            
+                            var publishedDate2 = new Date(gelenVeriler1[2].publishedAt);
+                            var formattedDate2 = publishedDate2.toLocaleDateString();
+                            var formattedTime2 = publishedDate2.toLocaleTimeString();
+                            
+                            var publishedDate3 = new Date(gelenVeriler1[3].publishedAt);
+                            var formattedDate3 = publishedDate3.toLocaleDateString();
+                            var formattedTime3 = publishedDate3.toLocaleTimeString();
+                            
+                            var publishedDate4 = new Date(gelenVeriler1[4].publishedAt);
+                            var formattedDate4= publishedDate4.toLocaleDateString();
+                            var formattedTime4 = publishedDate4.toLocaleTimeString();
+
+                          
+                          veriler1.innerText=gelenVeriler1[0].value+" C°";
+                          veriler2.innerText=gelenVeriler1[0].value+ ' C° / ' +formattedDate+ ' // ' +formattedTime;
+                          veriler3.innerText=gelenVeriler1[1].value+ ' C° / ' +formattedDate1+ ' // ' +formattedTime1;
+                          veriler4.innerText=gelenVeriler1[2].value+ ' C° / ' +formattedDate2+ ' // ' +formattedTime2;
+                          veriler5.innerText=gelenVeriler1[3].value+ ' C° / ' +formattedDate3+ ' // ' +formattedTime3;
+                          veriler6.innerText=gelenVeriler1[4].value+ ' C° / ' +formattedDate4+ ' // ' +formattedTime4;
+
+                          
+                        });                     
+                      }
+                      function getir() {
+                        var veriler=document.getElementById("humidity");
+                        ysAjax("kisiler","GET",null,function(sonuc){
+                          var gelenVeriler = JSON.parse(sonuc.responseText);
+                          veriler.innerText=gelenVeriler[0].value;
+                        });                     
+                      }
+                      setInterval(getir, 2000);
+                      setInterval(getir1, 2000);
+
+
+                      
+                    //   const request = new XMLHttpRequest();
+                    //   request.open('GET','/kisiler')
+                    // request.onload=()=>{
+                    //   const results=JSON.parse(request.responseText);
+                    //   const myElement = document.getElementById("humidity");
+                    // myElement.innerText= results[0].value;
+                    // }
+                    // request.send();
+                    
+                </script>
+             </div>
+
+             <div class="card">
+                <div class="card-icon comment">
+                  <span class="las la-lightbulb"></span>
+                </div>
+                <div class="card-info">
+                  <h1 id="led">LAMP</h1>
+                </div>
+                
+                <button id="ledOpen" class="button button1" onclick="updateMsg('on')">OPEN </button>
+               <button id="ledClose" class="button button2" onclick="updateMsg('off')" >CLOSE</button>
+             </div>
+             <div class="card">
+              <div class="card-icon com">
+                <span class="las la-radiation"></span>
+              </div>
+              <div class="card-info">
+                <h1 id="fan">FAN</h1>
+              </div>
+              <button id="fanOpen" class="button button1" onclick="updateMsg('on1')"  >OPEN </button>
+              <button id="fanClose" class="button button2" onclick="updateMsg('off1')" >CLOSE</button>
+              <script src="index.js" ></script> 
+              <script>
+                function updateMsg(value) {
+                  // Update the msg variable in index.js
+                  fetch('/update-msg', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ value })
+                  });
+                }
+              </script>
+           </div>
+           </div>
+           
+<div class="chart-grid">
+  <div class="chart-follow">
+      <div class="chart-head">
+          <h3>TEMPERATURE (LAST 10 VALUES) </h3>
+          <span class="las la-temperature-low" ></span>
+      </div>
+      <div  id="myfirstchart" style=" font-size: 5rem;"></div>
+      <h1 id="temp"></h1>
+      <h1 id="temp1"style=" color: rgb(218, 194, 194);" ></h1>
+      <h1 id="temp2"></h1>
+      <h1 id="temp3"style=" color: rgb(218, 194, 194);"></h1>
+      <h1 id="temp4"></h1>
+
+  </div>
+  </div>
+
+           
+        </main>
+    </div>
+
+    <label class="close-mobile-menu" for="menu-toggle"></label>
+     
+</body>
+</html>
